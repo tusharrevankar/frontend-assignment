@@ -1,45 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function Slider({ randomCats }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const images = [
+    'https://loremflickr.com/g/600/600/cat',
+    'https://loremflickr.com/g/600/600/cat',
+    'https://loremflickr.com/g/600/600/cat',
+    'https://loremflickr.com/g/600/600/cat',
+  ];
+
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+  };
+
   return (
-    <div className="max-w-2xl mx-auto">
-      <div id="default-carousel" className="relative" data-carousel="static">
-        {/* Carousel wrapper */}
-        <div className="overflow-hidden relative h-56 rounded-lg sm:h-64 xl:h-80 2xl:h-96">
-          {randomCats?.map((cat, index) => (
-            <div key={index} className="hidden duration-700 ease-in-out" data-carousel-item>
-              <span className="absolute top-1/2 left-1/2 text-2xl font-semibold text-white -translate-x-1/2 -translate-y-1/2 sm:text-3xl dark:text-gray-800">
-                Slide {index + 1}
-              </span>
+    <div className="flex pt-12 px-6 md:px-20 items-center justify-center bg-hero md:h-screen overflow-hidden">
+      <div className="flex flex-col gap-6 md:flex-row items-center max-w-8xl">
+        <div className="w-full md:w-1/2 lg:pr-32">
+          <h2 className="text-4xl lg:text-5xl text-center md:text-left text-black-900 leading-tight font-medium">There’s a
+            better way to talk with your customers.</h2>
+          <h3 className="mt-6 md:mt-10 text-md lg:text-xl text-center md:text-left text-gray-700 font-light tracking-wider leading-relaxed">
+            Help Scout is designed with your customers in mind. Provide email and live chat with a personal touch,
+            and deliver help content right where your customers need it, all in one place, all for one low price.
+          </h3>
+        </div>
+        <div className="w-full md:w-1/2 flex justify-center md:justify-end relative">
+          {randomCats.length > 0 && (
+            <>
+              <button onClick={prevImage} className="absolute top-1/2 left-0 transform -translate-y-1/2 text-white font-bold text-xl focus:outline-none">
+                &#8249;
+              </button>
               <img
-                src={cat.url}
-                className="block absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2"
-                alt={`Cat ${index + 1}`}
+                src={randomCats[currentImageIndex].url}
+                alt={`Cat ${currentImageIndex + 1}`}
+                className="object-cover w-full h-96 rounded-md"
               />
-            </div>
-          ))}
+              <button onClick={nextImage} className="absolute top-1/2 right-0 transform -translate-y-1/2 text-white font-bold text-xl focus:outline-none">
+                &#8250;
+              </button>
+            </>
+          )}
         </div>
-        {/* Slider indicators */}
-        <div className="flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2">
-          {randomCats?.map((_, index) => (
-            <button key={index} type="button" className="w-3 h-3 rounded-full" aria-current="false" aria-label={`Slide ${index + 1}`} data-carousel-slide-to={index}></button>
-          ))}
-        </div>
-        {/* Slider controls */}
-        <button
-          type="button"
-          className="flex absolute top-0 left-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none"
-          data-carousel-prev
-        >
-          {/* Previous button SVG */}
-        </button>
-        <button
-          type="button"
-          className="flex absolute top-0 right-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none"
-          data-carousel-next
-        >
-          {/* Next button SVG */}
-        </button>
       </div>
     </div>
   );
